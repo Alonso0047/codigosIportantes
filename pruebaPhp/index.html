@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda</title>
+    <style>
+        .producto {
+            border: 1px solid #ccc;
+            margin: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+        .producto img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Productos</h1>
+    <div id="productos"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('getProducts.php')
+                .then(response => response.json())
+                .then(data => {
+                    const productosContainer = document.getElementById('productos');
+                    data.forEach(producto => {
+                        const productoDiv = document.createElement('div');
+                        productoDiv.classList.add('producto');
+                        productoDiv.innerHTML = `
+                            <h2>${producto.nombre}</h2>
+                            <p>${producto.descripcion}</p>
+                            <p>Precio: $${producto.precio}</p>
+                            <img src="${producto.imagen}" alt="${producto.nombre}">
+                        `;
+                        productosContainer.appendChild(productoDiv);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
